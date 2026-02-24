@@ -13,6 +13,10 @@ async def main():
     log.info("▶ Browser launched")
 
     await login(page)
+
+    log.info("⏳ Waiting 10s for game to load...")
+    await asyncio.sleep(10)
+
     await enter_game(page)
 
     log.info("✔ All tasks complete. Browser stays open.")

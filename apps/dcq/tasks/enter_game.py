@@ -30,7 +30,7 @@ async def enter_game(page: Page):
     pts = cfg["points"]
     delay = cfg.get("delay_between_clicks", 0.5)
 
-    await click_point(page, pts["close_popup"], "Close popup (P1)", 2)
+    await click_point(page, pts["close_popup"], "Close popup (P1)", delay)
     await click_point(page, pts["change_region"], "Change region (P2)", delay)
     await click_point(page, pts["my_server"], "My server (P3)", delay)
     await click_point(page, pts["target_server"], "Target server (P4)", delay)

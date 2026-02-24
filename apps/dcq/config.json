@@ -1,25 +1,25 @@
 {
   "points": {
     "close_popup": {
-      "x": 468,
-      "y": 186
+      "x": 460,
+      "y": 100
     },
     "change_region": {
-      "x": 380,
-      "y": 800
+      "x": 370,
+      "y": 715
     },
     "my_server": {
-      "x": 130,
-      "y": 320
+      "x": 110,
+      "y": 235
     },
     "target_server": {
-      "x": 300,
-      "y": 330
+      "x": 310,
+      "y": 245
     },
     "start_game": {
-      "x": 270,
-      "y": 860
+      "x": 260,
+      "y": 775
     }
   },
-  "delay_between_clicks": 0.5
+  "delay_between_clicks": 3
 }
