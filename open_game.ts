@@ -1,19 +1,13 @@
 import puppeteer from "puppeteer";
 import "dotenv/config";
+import { browserOptions } from "./browserOptions.js";
 
 const USERNAME = process.env.DCQ_USERNAME ?? "";
 const PASSWORD = process.env.DCQ_PASSWORD ?? "";
 
 const run = async () => {
   // Launch the browser and open a new blank page.
-  const browser = await puppeteer.launch({
-    headless: false,
-    args: ["--window-size=500,1000", "--window-position=0,0"],
-    defaultViewport: {
-      width: 500,
-      height: 900,
-    },
-  });
+  const browser = await puppeteer.launch(browserOptions);
   const page = await browser.newPage();
 
   // Navigate the page to a URL.

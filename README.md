@@ -50,6 +50,6 @@ pip install -r requirements.txt
 ## Chạy chương trình
 
 ```bash
-pnpm run test
+pnpm start
 python ./enter_game.py
 ```
