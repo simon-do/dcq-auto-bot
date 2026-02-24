@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "tsx open_game.ts"
+    "start": "tsx apps/dcq/tasks/login.ts"
   },
   "keywords": [],
   "author": "",

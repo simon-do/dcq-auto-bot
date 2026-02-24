@@ -3,7 +3,7 @@ import time
 
 import pyautogui
 
-CONFIG_PATH = "enter_game_config.json"
+CONFIG_PATH = "../config.json"
 
 
 def load_config(path: str) -> dict:
