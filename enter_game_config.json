@@ -1,0 +1,10 @@
+{
+  "points": {
+    "update_popup": { "x": 468, "y": 186 },
+    "change_region": { "x": 380, "y": 800 },
+    "my_server": { "x": 130, "y": 320 },
+    "target_server": { "x": 300, "y": 330 },
+    "start_game": { "x": 270, "y": 860 }
+  },
+  "delay_between_clicks": 0.5
+}
