@@ -1,40 +1,29 @@
 # dcq-auto-bot
 
-Bot tự động đăng nhập và vào game **Gọi Ta Đại Chưởng Quỹ** (webgame) trên trình duyệt, sử dụng kết hợp **Puppeteer (Node.js)** và **PyAutoGUI (Python)**.
+Bot tự động đăng nhập và vào game **Gọi Ta Đại Chưởng Quỹ** (webgame) trên trình duyệt, sử dụng **Playwright (Python)**.
 
 Hiện tại bot đã:
 - Mở Chrome ở kích thước cố định 500×900.
 - Tự động login bằng selector (username / password / nút Đăng nhập).
-- Tự động xử lý màn hình chọn server bằng click tọa độ để vào màn hình chính trong game.
+- Tự động xử lý màn hình chọn server bằng click tọa độ viewport để vào màn hình chính trong game.
 
 ---
 
 ## Kiến trúc nhanh
 
-- `open_game.ts`  
-  - Dùng Puppeteer để:
-    - Launch Chrome (headless: false).
-    - Set viewport 500×900.
-    - Mở URL game.
-    - Điền username / password.
-    - Click nút **Đăng nhập**.
-
-- `enter_game.py` + `config.json`  
-  - Dùng PyAutoGUI để click theo tọa độ màn hình (Windows):
-    - Đóng popup cập nhật.
-    - Chọn server đang chơi.
-    - Click nút **Bắt đầu game**.
-
-Bot hiện click theo **screen coordinates**, nên vị trí & kích thước cửa sổ Chrome phải cố định.
+- `main.py` — Entry point, khởi chạy browser và chạy tuần tự các task.
+- `core/browser/browser.py` — Launch Chromium với viewport 500×900.
+- `core/logger.py` — Cấu hình logging với timestamp và đo thời gian mỗi bước.
+- `apps/dcq/tasks/login.py` — Điền username / password, click nút Đăng nhập.
+- `apps/dcq/tasks/enter_game.py` — Click theo tọa độ viewport: đóng popup, chọn server, bắt đầu game.
+- `apps/dcq/config.json` — Tọa độ click cho các bước enter game.
 
 ---
 
 ## Yêu cầu
 
-- Node.js (v22+)
 - Python 3.11+
 - Git
-- Hệ điều hành: Windows (PyAutoGUI + toạ độ màn hình)
 
 ---
 
@@ -43,13 +32,12 @@ Bot hiện click theo **screen coordinates**, nên vị trí & kích thước c�
 ```bash
 git clone https://github.com/simon-do/dcq-auto-bot.git
 cd dcq-auto-bot
-pnpm install
 pip install -r requirements.txt
+playwright install chromium
 ```
 
 ## Chạy chương trình
 
 ```bash
-pnpm start
-python ./enter_game.py
+python main.py
 ```

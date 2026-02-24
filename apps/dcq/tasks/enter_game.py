@@ -1,9 +1,14 @@
+import asyncio
 import json
-import time
+import os
 
-import pyautogui
+from playwright.async_api import Page
 
-CONFIG_PATH = "../config.json"
+from core.logger import get_logger, log_step
+
+CONFIG_PATH = os.path.join(os.path.dirname(__file__), "..", "config.json")
+
+log = get_logger("enter_game")
 
 
 def load_config(path: str) -> dict:
@@ -11,35 +16,24 @@ def load_config(path: str) -> dict:
         return json.load(f)
 
 
-def click_point(point: dict, label: str, delay: float):
+async def click_point(page: Page, point: dict, label: str, delay: float):
     x = point["x"]
     y = point["y"]
-    print(f"Click {label} at ({x}, {y})")
-    pyautogui.moveTo(x, y)
-    pyautogui.click()
-    time.sleep(delay)
+    with log_step(log, f"Click {label} at ({x}, {y})"):
+        await page.mouse.click(x, y)
+        await asyncio.sleep(delay)
 
 
-def main():
+async def enter_game(page: Page):
+    """Click through server selection and enter game using viewport coordinates."""
     cfg = load_config(CONFIG_PATH)
     pts = cfg["points"]
     delay = cfg.get("delay_between_clicks", 0.5)
 
-    print("enter_game will start in 3 seconds...")
-    time.sleep(3)
+    await click_point(page, pts["close_popup"], "Close popup (P1)", 2)
+    await click_point(page, pts["change_region"], "Change region (P2)", delay)
+    await click_point(page, pts["my_server"], "My server (P3)", delay)
+    await click_point(page, pts["target_server"], "Target server (P4)", delay)
+    await click_point(page, pts["start_game"], "Start game (P5)", delay)
 
-    # Get coordinates
-    # pyautogui.displayMousePosition()
-
-    # P1 -> P5
-    click_point(pts["update_popup"], "update_popup (P1)", 2)
-    click_point(pts["change_region"], "change_region (P2)", delay)
-    click_point(pts["my_server"], "my_server (P3)", delay)
-    click_point(pts["target_server"], "target_server (P4)", delay)
-    click_point(pts["start_game"], "start_game (P5)", delay)
-
-    print("Done enter_game sequence.")
-
-
-if __name__ == "__main__":
-    main()
+    log.info("✔ enter_game complete")
