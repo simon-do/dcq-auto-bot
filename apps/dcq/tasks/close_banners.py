@@ -7,6 +7,7 @@ from core.ai.vision import (
     find_any_on_screen,
     load_template,
     take_screenshot,
+    wait_for_template,
 )
 from core.logger import get_logger
 
@@ -25,6 +26,8 @@ def template(name: str):
 
 async def close_starting_banners(page: Page):
     """Dismiss all startup popups by detecting close buttons or 'click blank area' text."""
+
+    await wait_for_template(page, template("confirm_button_1.png"), "Confirm button", timeout=30)
 
     confirm_button = [
         ("confirm_button_1", load_template(template("confirm_button_1.png"))),

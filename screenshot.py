@@ -23,13 +23,7 @@ async def main():
 
     await login(page)
 
-    log.info("⏳ Waiting 10s for game to load...")
-    await asyncio.sleep(10)
-
     await enter_game(page)
-
-    log.info("⏳ Waiting 5s for game main screen...")
-    await asyncio.sleep(5)
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     filename = f"game_{timestamp}.png"

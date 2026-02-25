@@ -1,39 +1,34 @@
-import asyncio
-import json
 import os
 
 from playwright.async_api import Page
 
-from core.logger import get_logger, log_step
+from core.ai.vision import find_and_click
+from core.logger import get_logger
 
-CONFIG_PATH = os.path.join(os.path.dirname(__file__), "..", "config.json")
+TEMPLATES_DIR = os.path.join(os.path.dirname(__file__), "..", "templates")
 
 log = get_logger("enter_game")
 
 
-def load_config(path: str) -> dict:
-    with open(path, "r", encoding="utf-8") as f:
-        return json.load(f)
-
-
-async def click_point(page: Page, point: dict, label: str, delay: float):
-    x = point["x"]
-    y = point["y"]
-    with log_step(log, f"Click {label} at ({x}, {y})"):
-        await page.mouse.click(x, y)
-        await asyncio.sleep(delay)
+def template(name: str) -> str:
+    return os.path.join(TEMPLATES_DIR, name)
 
 
 async def enter_game(page: Page):
-    """Click through server selection and enter game using viewport coordinates."""
-    cfg = load_config(CONFIG_PATH)
-    pts = cfg["points"]
-    delay = cfg.get("delay_between_clicks", 0.5)
+    """Navigate through server selection using template matching."""
 
-    await click_point(page, pts["close_popup"], "Close popup (P1)", delay)
-    await click_point(page, pts["change_region"], "Change region (P2)", delay)
-    await click_point(page, pts["my_server"], "My server (P3)", delay)
-    await click_point(page, pts["target_server"], "Target server (P4)", delay)
-    await click_point(page, pts["start_game"], "Start game (P5)", delay)
+    steps = [
+        ("update_info_close_button.png", "Close Update Information"),
+        ("change_region_button.png", "Change region"),
+        ("my_server_option.png", "My server"),
+        ("phu_quy_s3_option.png", "Phú Quý S3"),
+        ("start_game_button.png", "Start game"),
+    ]
+
+    for tmpl_name, label in steps:
+        found = await find_and_click(page, template(tmpl_name), label, timeout=30)
+        if not found:
+            log.error(f"Could not find '{label}', aborting enter_game")
+            return
 
     log.info("✔ enter_game complete")
